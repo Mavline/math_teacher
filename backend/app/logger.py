@@ -11,7 +11,8 @@ def setup_logging():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(name)s - '
+                                  '%(levelname)s - %(message)s')
 
     # Основной файл логов
     file_handler = RotatingFileHandler(
@@ -46,3 +47,8 @@ def setup_logging():
     logging.getLogger("openai").setLevel(logging.INFO)
 
     return logger
+
+
+def log_user_progress(user_id, progress):
+    logger = logging.getLogger('user_progress')
+    logger.info(f"User {user_id} progress: {progress}")

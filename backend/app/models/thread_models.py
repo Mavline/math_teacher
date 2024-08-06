@@ -1,27 +1,40 @@
-from typing import TypedDict
+from pydantic import BaseModel
+from typing import List, Optional, Union
 
+class ContentItem(BaseModel):
+    type: str
+    text: Optional[str] = None
 
-class ThreadCreate(TypedDict):
-    pass
+class Attachment(BaseModel):
+    file_id: str
+    tools: List[dict]
 
+class MessageCreate(BaseModel):
+    role: str = "user"
+    content: Union[str, List[ContentItem]]
+    attachments: Optional[List[Attachment]] = None
 
-class ThreadResponse(TypedDict):
-    id: str
+class ThreadCreate(BaseModel):
+    messages: Optional[List[MessageCreate]] = None
 
-
-class MessageCreate(TypedDict):
-    content: str
-
-
-class MessageResponse(TypedDict):
-    id: str
-    content: str
-
-
-class RunCreate(TypedDict):
+class RunCreate(BaseModel):
     assistant_id: str
+    model: Optional[str] = None
+    instructions: Optional[str] = None
+    tools: Optional[List[dict]] = None
 
-
-class RunResponse(TypedDict):
+class ThreadResponse(BaseModel):
     id: str
+
+class MessageResponse(BaseModel):
+    id: str
+    thread_id: str
+    role: str
+    content: List[ContentItem]
+
+class RunResponse(BaseModel):
+    id: str
+    thread_id: str
+    assistant_id: str
     status: str
+    model: str
